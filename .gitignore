@@ -127,3 +127,17 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Editor/IDE
+.idea/
+
+# Configuration
+./config.json
+config.json
+
+# Database files
+flaskr.db
+
+# Static files
+static/products/*
+static/products.json
