@@ -1,9 +1,9 @@
 from flask import Blueprint, request
 from flask_jwt_extended import get_jwt_identity
 
-from models.user import User
+from models.entry import Entry
 from services.database import db_session
-from services.utilities import Utilities, admin_required, user_required
+from services.utilities import Utilities, user_required
 
 # Configure blueprint
 entry = Blueprint('entry', __name__, url_prefix='/entry')
@@ -30,10 +30,9 @@ def post_entry_add():
     except (AttributeError, ValueError) as e:
         return Utilities.detailed_response(400, "Bad request, see details.", {"error": e.__str__()})
 
-    return Utilities.response(200, get_jwt_identity())
+    new_entry = Entry(text=body, tags=tags, user=get_jwt_identity())
+    db_session.add(new_entry)
+    db_session.commit()
 
-    # user = User.query.filter_by(username=username).first()
-    #
-    # return Utilities.custom_response(200, f"Successfully logged in as {user.username}",
-    #                                  {"login": {"uuid": user.uuid, "token": user.token,
-    #                                             "lifetime": lifetime.total_seconds()}})
+    return Utilities.custom_response(200, f"Successfully received response",
+                                     {"data": {"body": body, "tags": tags}})
