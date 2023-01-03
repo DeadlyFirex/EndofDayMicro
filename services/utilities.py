@@ -95,6 +95,21 @@ class Utilities:
         return result, status
 
     @staticmethod
+    def detailed_error(status: int = 400, message: str = "Bad request, see details.", error: Union[str, dict] = None):
+        """
+        Generates an JSON response.
+        Returns a dictionary.
+
+        :return: Dictionary
+        """
+        result = {
+            "status": status,
+            "message": message,
+        }
+        result.update({"error": error})
+        return result, status
+
+    @staticmethod
     def custom_response(status: int = 200, message: str = "This is a message", custom: Union[str, dict] = None):
         """
         Generates a custom JSON response.\n
